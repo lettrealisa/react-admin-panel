@@ -1,8 +1,11 @@
+import MenuIcon from "@mui/icons-material/Menu";
+
 const Header = () => {
   return (
-    <>
-      <p>Header</p>
-    </>
+    <div className="header">
+      <div>Header</div>
+      <div>Header</div>
+    </div>
   );
 };
 

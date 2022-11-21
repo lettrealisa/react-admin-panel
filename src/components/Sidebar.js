@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useRef } from "react";
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+const Sidebar = ({ ref, open }) => {
+  const sideRef = useRef();
   return (
-    <>
-      <p>Sidebar</p>
-    </>
+    <div className="sidebar" ref={sideRef}>
+      <div className="item item-active">
+        <p>{open ? "Content" : "Пользователи 🥳"}</p>
+      </div>
+      <div className="item">
+        <p>{open ? "Content" : "Sidebarrrrrrrrrrr 🥳"}</p>
+      </div>
+      <div className="item">
+        <p>{open ? "Content" : "Sidebarrrrrrrrrrr 🥳"}</p>
+      </div>
+      <div className="item">
+        <p>{open ? "Content" : "Sidebarrrrrrrrrrr 🥳"}</p>
+      </div>
+      <div className="item">
+        <p>{open ? "Content" : "Sidebarrrrrrrrrrr 🥳"}</p>
+      </div>
+    </div>
   );
 };
 
