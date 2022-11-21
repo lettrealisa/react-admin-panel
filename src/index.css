@@ -68,6 +68,10 @@ code {
   border-left: 1px solid #d3d3d3;
 }
 
+.title-column {
+  text-transform: capitalize;
+}
+
 .row:hover {
   background-color: #d3d3d3;
   border-radius: 10px;

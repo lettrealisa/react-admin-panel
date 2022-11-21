@@ -1,15 +1,14 @@
-import { Edit, Cancel } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { Edit, Cancel, CheckCircle } from "@mui/icons-material";
+import { useState } from "react";
 
-const Content = ({ toggleOpen }) => {
+const Content = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [job, setJob] = useState("");
+  const [pet, setPet] = useState("");
+  const [date, setDate] = useState("");
 
   const [row, setRow] = useState(0);
-
-  const rowRef = useRef();
-  const cbRef = useRef();
 
   const toggleEditable = (i) => {
     setRow(i);
@@ -28,6 +27,11 @@ const Content = ({ toggleOpen }) => {
     setRow(0);
   };
 
+  const saveChanges = (user) => {
+    localStorage.setItem("user", user.pet);
+    setRow(0);
+  };
+
   const changeName = (e) => {
     setName(e.target.value);
   };
@@ -37,11 +41,53 @@ const Content = ({ toggleOpen }) => {
   const changeJob = (e) => {
     setJob(e.target.value);
   };
+  const changePet = (e) => {
+    setPet(e.target.value);
+  };
+  const changeDate = (e) => {
+    setDate(e.target.value);
+  };
+
+  const pets = [
+    { id: 1, name: "cat" },
+    { id: 2, name: "dog" },
+    { id: 3, name: "turtle" },
+  ];
 
   const users = [
-    { id: 1, name: "Todd", age: 31, job: "engineer" },
-    { id: 2, name: "Rob", age: 37, job: "tour guide" },
-    { id: 3, name: "Steve", age: 32, job: "charlatan" },
+    {
+      id: 1,
+      name: "Todd",
+      age: 31,
+      job: "engineer",
+      pet: pets[0].name,
+      date: "2012-02-12",
+    },
+    {
+      id: 2,
+      name: "Rob",
+      age: 37,
+      job: "tour guide",
+      pet: pets[1].name,
+      date: "2017-05-15",
+    },
+    {
+      id: 3,
+      name: "Steve",
+      age: 32,
+      job: "charlatan",
+      pet: pets[2].name,
+      date: "2013-01-10",
+    },
+  ];
+
+  const columns = [
+    { id: 1, title: "name" },
+    { id: 2, title: "age" },
+    { id: 3, title: "job" },
+    { id: 4, title: "pet" },
+    { id: 5, title: "date" },
+    { id: 6, title: "" },
   ];
 
   return (
@@ -51,21 +97,22 @@ const Content = ({ toggleOpen }) => {
           <div className="column">
             <input type="checkbox" className="checkbox" />
           </div>
-          <div className="title-column">Name</div>
-          <div className="title-column">Age</div>
-          <div className="title-column">Job</div>
-          <div className="title-column">&nbsp;</div>
+          {columns.map((column) => {
+            return (
+              <div className="title-column" key={column.id}>
+                {column.title}
+              </div>
+            );
+          })}
         </div>
         {users.map((user) => {
           return (
-            <div className="row" rowid={user.id} key={user.id} ref={rowRef}>
+            <div className="row" key={user.id}>
               <div className="column">
                 <input
                   type="checkbox"
                   className="checkbox"
-                  rowid={user.id}
                   key={user.id}
-                  ref={cbRef}
                   onChange={() => toggleSelectable(user.id)}
                 />
               </div>
@@ -99,6 +146,31 @@ const Content = ({ toggleOpen }) => {
               ) : (
                 <div className="column">{user.job}</div>
               )}
+              {row > 0 && users[row - 1].id === user.id ? (
+                <select name="pets" onChange={changePet}>
+                  {pets.map((pet) => {
+                    return (
+                      <option value={pet.id} key={pet.id}>
+                        {pet.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              ) : (
+                <div className="column">{user.pet}</div>
+              )}
+
+              {row > 0 && users[row - 1].id === user.id ? (
+                <input
+                  type="date"
+                  defaultValue={user.date}
+                  onChange={changeDate}
+                  className="text-input"
+                />
+              ) : (
+                <div className="column">{user.date}</div>
+              )}
+
               <div className="column">
                 {row > 0 && users[row - 1].id === user.id ? (
                   <button className="button" onClick={cancelEditing}>
@@ -107,12 +179,21 @@ const Content = ({ toggleOpen }) => {
                     </i>
                   </button>
                 ) : null}
+
                 <button
                   className="button"
-                  onClick={() => toggleEditable(user.id)}
+                  onClick={() =>
+                    row > 0 && users[row - 1].id === user.id
+                      ? saveChanges(user)
+                      : toggleEditable(user.id)
+                  }
                 >
                   <i>
-                    <Edit />
+                    {row > 0 && users[row - 1].id === user.id ? (
+                      <CheckCircle />
+                    ) : (
+                      <Edit />
+                    )}
                   </i>
                 </button>
               </div>
