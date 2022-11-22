@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import Content from "./Content";
 import { useRef, useState } from "react";
 
-const Wrapper = () => {
+const Wrapper = ({ socket }) => {
   const [open, setOpen] = useState(false);
   const wRef = useRef();
 
@@ -21,7 +21,7 @@ const Wrapper = () => {
       <Profile />
       <Header className="header" />
       <Sidebar open={open} />
-      <Content toggleOpen={toggleOpen} />
+      <Content toggleOpen={toggleOpen} socket={socket}/>
     </div>
   );
 };
