@@ -1,5 +1,7 @@
 import { Edit, Cancel, CheckCircle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { FilterList } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 
 const Content = ({ socket }) => {
   const [name, setName] = useState("");
@@ -92,17 +94,36 @@ const Content = ({ socket }) => {
   ];
 
   const columns = [
-    { id: 1, title: "name" },
-    { id: 2, title: "age" },
-    { id: 3, title: "job" },
-    { id: 4, title: "pet" },
-    { id: 5, title: "date" },
+    { id: 1, title: "name", visible: true },
+    { id: 2, title: "age", visible: true },
+    { id: 3, title: "job", visible: true },
+    { id: 4, title: "pet", visible: true },
+    { id: 5, title: "date", visible: true },
     { id: 6, title: "" },
   ];
 
+  const filters = columns.slice(0, -1);
+
   return (
     <div className="content">
+      <div className="filters-list">
+        {filters.map((filter) => {
+          return (
+            <div className="title-column" key={filter.id}>
+              <input type="checkbox" className="checkbox" />
+              {filter.title}
+            </div>
+          );
+        })}
+      </div>
       <div className="table">
+        <div className="filters">
+          <div className="input-container">
+            <i className="icon"><Search /></i>
+            <input type="text" className="text-input" />
+          </div>
+          <FilterList />
+        </div>
         <div className="title">
           <div className="column">
             <input type="checkbox" className="checkbox" />
@@ -127,58 +148,49 @@ const Content = ({ socket }) => {
                 />
               </div>
               {row > 0 && users[row - 1].id === user.id ? (
-                <input
-                  type="text"
-                  value={user.name}
-                  onChange={changeName}
-                  className="text-input"
-                />
+                <>
+                  <input
+                    type="text"
+                    value={user.name}
+                    onChange={changeName}
+                    className="text-input"
+                  />
+                  <input
+                    type="text"
+                    value={user.age}
+                    onChange={changeAge}
+                    className="text-input"
+                  />
+                  <input
+                    type="text"
+                    value={user.job}
+                    onChange={changeJob}
+                    className="text-input"
+                  />
+                  <select name="pets" onChange={changePet} className="select">
+                    {pets.map((pet) => {
+                      return (
+                        <option value={pet.id} key={pet.id}>
+                          {pet.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <input
+                    type="date"
+                    defaultValue={user.date}
+                    onChange={changeDate}
+                    className="text-input"
+                  />
+                </>
               ) : (
-                <div className="column">{user.name}</div>
-              )}
-              {row > 0 && users[row - 1].id === user.id ? (
-                <input
-                  type="text"
-                  value={user.age}
-                  onChange={changeAge}
-                  className="text-input"
-                />
-              ) : (
-                <div className="column">{user.age}</div>
-              )}
-              {row > 0 && users[row - 1].id === user.id ? (
-                <input
-                  type="text"
-                  value={user.job}
-                  onChange={changeJob}
-                  className="text-input"
-                />
-              ) : (
-                <div className="column">{user.job}</div>
-              )}
-              {row > 0 && users[row - 1].id === user.id ? (
-                <select name="pets" onChange={changePet}>
-                  {pets.map((pet) => {
-                    return (
-                      <option value={pet.id} key={pet.id}>
-                        {pet.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              ) : (
-                <div className="column">{user.pet}</div>
-              )}
-
-              {row > 0 && users[row - 1].id === user.id ? (
-                <input
-                  type="date"
-                  defaultValue={user.date}
-                  onChange={changeDate}
-                  className="text-input"
-                />
-              ) : (
-                <div className="column">{user.date}</div>
+                <>
+                  <div className="column">{user.name}</div>
+                  <div className="column">{user.age}</div>
+                  <div className="column">{user.job}</div>
+                  <div className="column">{user.pet}</div>
+                  <div className="column">{user.date}</div>
+                </>
               )}
 
               <div className="column">

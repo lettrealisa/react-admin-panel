@@ -1,18 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@100;400;600&family=Varela+Round&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  font-family: Montserrat, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-*, *::before, *::after {
+.header-logo {
+  font-family: Lobster, sans-serif;
+  font-size: 2rem;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -40,6 +49,12 @@ code {
   row-gap: 2rem;
 }
 
+.sidebar .item {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
 .sidebar .item-active {
   background-color: darkorange;
 }
@@ -49,22 +64,38 @@ code {
   background-color: #18c729;
 }
 
+.filters {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.filters-list {
+  display: none;
+}
+
 .table {
   display: grid;
-  /*background-color: #f3ff77;*/
   background-color: #ebecf0;
   border-radius: 10px;
   grid-auto-rows: 50px;
 }
 
-.row, .title {
+.row,
+.title {
   display: grid;
   grid-auto-flow: column;
   border-bottom: 1px solid #d3d3d3;
   grid-auto-columns: 1fr;
 }
 
-.column, .title-column {
+.title {
+  border-top: 1px solid #d3d3d3;
+}
+
+.column,
+.title-column {
   border-left: 1px solid #d3d3d3;
 }
 
@@ -92,6 +123,25 @@ code {
 .checkbox {
   transform: scale(1.2);
   accent-color: #808080;
+}
+
+.select {
+  font: inherit;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.input-container .icon {
+  position: absolute;
+}
+
+.input-container .text-input {
+  padding-left: 1.5rem;
+  background: transparent;
+  border: none;
 }
 
 .text-input {
