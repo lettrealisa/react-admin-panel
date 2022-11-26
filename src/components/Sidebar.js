@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const Sidebar = ({ open }) => {
   const columns = [
     { id: 1, title: "пользователи", active: true },
@@ -5,18 +7,29 @@ const Sidebar = ({ open }) => {
     { id: 3, title: "должности", active: false },
   ];
 
+  const [row, setRow] = useState(0);
+
+  const toggleActive = (i) => {
+    setRow(i);
+  };
+
   return (
     <div className="sidebar">
       {columns.map((column) => {
         return (
-          <div
-            className={
-              column.active ? "item-active item title-column" : "item title-column"
-            }
-            key={column.id}
-          >
-            {column.title}&nbsp;🥳
-          </div>
+          <>
+            <div
+              className={
+                row > 0 && columns[row - 1].id === column.id
+                  ? "item title-column item-active"
+                  : "item title-column"
+              }
+              key={column.id}
+              onClick={() => toggleActive(column.id)}
+            >
+              {column.title}&nbsp;🥳
+            </div>
+          </>
         );
       })}
     </div>

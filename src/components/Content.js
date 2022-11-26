@@ -1,19 +1,86 @@
-import { Edit, Cancel, CheckCircle } from "@mui/icons-material";
+import {
+  Cancel,
+  CheckCircle,
+  Edit,
+  FilterList,
+  Search,
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { FilterList } from "@mui/icons-material";
-import { Search } from "@mui/icons-material";
 
 const Content = ({ socket }) => {
+  const pets = [
+    { id: 1, name: "cat" },
+    { id: 2, name: "dog" },
+    { id: 3, name: "turtle" },
+  ];
+
+  const [users, setUsers] = useState([
+    {
+      id: 1,
+      name: "Todd",
+      age: 31,
+      job: "engineer",
+      pet: pets[0].name,
+      date: "2012-02-12",
+    },
+    {
+      id: 2,
+      name: "Rob",
+      age: 37,
+      job: "tour guide",
+      pet: pets[1].name,
+      date: "2017-05-15",
+    },
+    {
+      id: 3,
+      name: "Steve",
+      age: 32,
+      job: "charlatan",
+      pet: pets[2].name,
+      date: "2013-01-10",
+    },
+  ]);
+
+  const columns = [
+    { id: 1, title: "name", visible: true },
+    { id: 2, title: "age", visible: true },
+    { id: 3, title: "job", visible: true },
+    { id: 4, title: "pet", visible: true },
+    { id: 5, title: "date", visible: true },
+    { id: 6, title: "" },
+  ];
+
+  const filters = columns.slice(0, -1);
+
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [job, setJob] = useState("");
   const [pet, setPet] = useState("");
   const [date, setDate] = useState("");
 
+  const [currentUser, setCurrentUser] = useState({
+    name: "",
+    age: "",
+    job: "",
+    pet: "",
+    date: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setCurrentUser({ ...currentUser, [prop]: event.target.value });
+  };
+
   const [row, setRow] = useState(0);
 
   const toggleEditable = (i) => {
     setRow(i);
+    setCurrentUser({
+      name: users[i - 1].name,
+      age: users[i - 1].age,
+      job: users[i - 1].job,
+      pet: users[i - 1].pet,
+      date: users[i - 1].date,
+    });
   };
   const toggleSelectable = (i) => {
     const selectedRow = document.getElementsByClassName("row")[i - 1];
@@ -22,7 +89,6 @@ const Content = ({ socket }) => {
     } else {
       selectedRow.classList.add("row-focused");
     }
-    console.log(selectedRow);
   };
 
   const cancelEditing = () => {
@@ -60,50 +126,6 @@ const Content = ({ socket }) => {
     setDate(e.target.value);
   };
 
-  const pets = [
-    { id: 1, name: "cat" },
-    { id: 2, name: "dog" },
-    { id: 3, name: "turtle" },
-  ];
-
-  const users = [
-    {
-      id: 1,
-      name: "Todd",
-      age: 31,
-      job: "engineer",
-      pet: pets[0].name,
-      date: "2012-02-12",
-    },
-    {
-      id: 2,
-      name: "Rob",
-      age: 37,
-      job: "tour guide",
-      pet: pets[1].name,
-      date: "2017-05-15",
-    },
-    {
-      id: 3,
-      name: "Steve",
-      age: 32,
-      job: "charlatan",
-      pet: pets[2].name,
-      date: "2013-01-10",
-    },
-  ];
-
-  const columns = [
-    { id: 1, title: "name", visible: true },
-    { id: 2, title: "age", visible: true },
-    { id: 3, title: "job", visible: true },
-    { id: 4, title: "pet", visible: true },
-    { id: 5, title: "date", visible: true },
-    { id: 6, title: "" },
-  ];
-
-  const filters = columns.slice(0, -1);
-
   return (
     <div className="content">
       <div className="filters-list">
@@ -119,7 +141,9 @@ const Content = ({ socket }) => {
       <div className="table">
         <div className="filters">
           <div className="input-container">
-            <i className="icon"><Search /></i>
+            <i className="icon">
+              <Search />
+            </i>
             <input type="text" className="text-input" />
           </div>
           <FilterList />
@@ -151,23 +175,27 @@ const Content = ({ socket }) => {
                 <>
                   <input
                     type="text"
-                    value={user.name}
-                    onChange={changeName}
+                    value={currentUser.name}
+                    onChange={handleChange("name")}
                     className="text-input"
                   />
                   <input
                     type="text"
-                    value={user.age}
-                    onChange={changeAge}
+                    value={currentUser.age}
+                    onChange={handleChange("age")}
                     className="text-input"
                   />
                   <input
                     type="text"
-                    value={user.job}
-                    onChange={changeJob}
+                    value={currentUser.job}
+                    onChange={handleChange("job")}
                     className="text-input"
                   />
-                  <select name="pets" onChange={changePet} className="select">
+                  <select
+                    name="pets"
+                    onChange={handleChange("pet")}
+                    className="select"
+                  >
                     {pets.map((pet) => {
                       return (
                         <option value={pet.id} key={pet.id}>
@@ -178,8 +206,8 @@ const Content = ({ socket }) => {
                   </select>
                   <input
                     type="date"
-                    defaultValue={user.date}
-                    onChange={changeDate}
+                    defaultValue={currentUser.date}
+                    onChange={handleChange("date")}
                     className="text-input"
                   />
                 </>
