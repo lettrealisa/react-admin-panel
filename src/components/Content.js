@@ -6,15 +6,20 @@ import {
   Search,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+const selectUsers = (state) => state.users;
 
 const Content = ({ socket }) => {
+  const users = useSelector(selectUsers);
+
   const pets = [
     { id: 1, name: "cat" },
     { id: 2, name: "dog" },
     { id: 3, name: "turtle" },
   ];
 
-  const [users, setUsers] = useState([
+  /*const [users, setUsers] = useState([
     {
       id: 1,
       name: "Todd",
@@ -39,7 +44,7 @@ const Content = ({ socket }) => {
       pet: pets[2].name,
       date: "2013-01-10",
     },
-  ]);
+  ]);*/
 
   const columns = [
     { id: 1, title: "name", visible: true },
@@ -51,12 +56,6 @@ const Content = ({ socket }) => {
   ];
 
   const filters = columns.slice(0, -1);
-
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [job, setJob] = useState("");
-  const [pet, setPet] = useState("");
-  const [date, setDate] = useState("");
 
   const [currentUser, setCurrentUser] = useState({
     name: "",
@@ -109,22 +108,6 @@ const Content = ({ socket }) => {
   useEffect(() => {
     sendMessage();
   });
-
-  const changeName = (e) => {
-    setName(e.target.value);
-  };
-  const changeAge = (e) => {
-    setAge(e.target.value);
-  };
-  const changeJob = (e) => {
-    setJob(e.target.value);
-  };
-  const changePet = (e) => {
-    setPet(e.target.value);
-  };
-  const changeDate = (e) => {
-    setDate(e.target.value);
-  };
 
   return (
     <div className="content">

@@ -17,19 +17,17 @@ const Sidebar = ({ open }) => {
     <div className="sidebar">
       {columns.map((column) => {
         return (
-          <>
-            <div
-              className={
-                row > 0 && columns[row - 1].id === column.id
-                  ? "item title-column item-active"
-                  : "item title-column"
-              }
-              key={column.id}
-              onClick={() => toggleActive(column.id)}
-            >
-              {column.title}&nbsp;🥳
-            </div>
-          </>
+          <div
+            className={
+              row > 0 && columns[row - 1].id === column.id
+                ? "item title-column item-active"
+                : "item title-column"
+            }
+            key={column.id}
+            onClick={() => toggleActive(column.id)}
+          >
+            {column.title}&nbsp;🥳
+          </div>
         );
       })}
     </div>
