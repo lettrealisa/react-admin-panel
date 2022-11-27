@@ -6,45 +6,21 @@ import {
   Search,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userAdded } from "../features/users/usersSlice";
+import Button from "./sub/Button";
 
 const selectUsers = (state) => state.users;
 
 const Content = ({ socket }) => {
   const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
 
   const pets = [
     { id: 1, name: "cat" },
     { id: 2, name: "dog" },
     { id: 3, name: "turtle" },
   ];
-
-  /*const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Todd",
-      age: 31,
-      job: "engineer",
-      pet: pets[0].name,
-      date: "2012-02-12",
-    },
-    {
-      id: 2,
-      name: "Rob",
-      age: 37,
-      job: "tour guide",
-      pet: pets[1].name,
-      date: "2017-05-15",
-    },
-    {
-      id: 3,
-      name: "Steve",
-      age: 32,
-      job: "charlatan",
-      pet: pets[2].name,
-      date: "2013-01-10",
-    },
-  ]);*/
 
   const columns = [
     { id: 1, title: "name", visible: true },
@@ -122,6 +98,19 @@ const Content = ({ socket }) => {
         })}
       </div>
       <div className="table">
+        <Button
+          text={"+ Добавить пользователя"}
+          action={() => dispatch(
+            userAdded({
+              id: 4,
+              name: "Bob",
+              age: 45,
+              job: "merchant",
+              pet: pets[2].name,
+              date: "2021-01-21",
+            })
+          )}
+        />
         <div className="filters">
           <div className="input-container">
             <i className="icon">
@@ -206,7 +195,7 @@ const Content = ({ socket }) => {
 
               <div className="column">
                 {row > 0 && users[row - 1].id === user.id ? (
-                  <button className="button" onClick={cancelEditing}>
+                  <button className="icon-button" onClick={cancelEditing}>
                     <i>
                       <Cancel />
                     </i>
@@ -214,7 +203,7 @@ const Content = ({ socket }) => {
                 ) : null}
 
                 <button
-                  className="button"
+                  className="icon-button"
                   onClick={() =>
                     row > 0 && users[row - 1].id === user.id
                       ? saveChanges(user)

@@ -48,5 +48,7 @@ const usersSlice = createSlice({
   },
 });
 
+// destructure and export the plain action creators
 export const { userAdded } = usersSlice.actions;
+
 export default usersSlice.reducer;

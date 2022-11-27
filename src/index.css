@@ -113,11 +113,23 @@ code {
   border-radius: 10px;
 }
 
+.button,
+.icon-button {
+  cursor: pointer;
+}
+
 .button {
+  background-color: #8e4585;
+  border: none;
+  font: inherit;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.icon-button {
   background: none;
   border: none;
   color: #808080;
-  cursor: pointer;
 }
 
 .checkbox {
