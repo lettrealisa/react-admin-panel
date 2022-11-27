@@ -1,11 +1,14 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const pets = [
   { id: 1, name: "cat" },
   { id: 2, name: "dog" },
   { id: 3, name: "turtle" },
 ];
 
-const initialState = {
-  users: [
+const usersSlice = createSlice({
+  name: "users",
+  initialState: [
     {
       id: 1,
       name: "Todd",
@@ -31,17 +34,19 @@ const initialState = {
       date: "2013-01-10",
     },
   ],
-};
+  reducers: {
+    userAdded(state, action) {
+      state.push({
+        id: action.payload.id,
+        name: action.payload.name,
+        age: action.payload.age,
+        job: action.payload.job,
+        pet: action.payload.pet,
+        date: action.payload.date,
+      });
+    },
+  },
+});
 
-export default function usersReducer(state = initialState, action) {
-  switch (action.type) {
-    case "users/userAdded": {
-      return {
-        ...state,
-        users: [...state.users, {}],
-      };
-    }
-    default:
-      return state;
-  }
-}
+export const { userAdded } = usersSlice.actions;
+export default usersSlice.reducer;
