@@ -8,12 +8,19 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userAdded } from "../features/users/usersSlice";
+import Modal from "./Modal";
 import Button from "./sub/Button";
 
 const selectUsers = (state) => state.users;
 const selectTable = (state) => state.table;
 
 const Content = ({ socket }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const toggleModalOpen = () => {
+    setModalOpen((prev) => !prev);
+  };
+
   const table = useSelector(selectTable);
   const selectItems = (state) => state[table.name];
   const items = useSelector(selectItems);
@@ -118,6 +125,8 @@ const Content = ({ socket }) => {
             )
           }
         />
+        <Button text={"+"} action={toggleModalOpen} />
+        {modalOpen ? <Modal modalOpen={modalOpen} toggleModalOpen={toggleModalOpen} /> : null}
         <div className="filters">
           <div className="input-container">
             <i className="icon">
