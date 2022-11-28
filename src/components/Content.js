@@ -11,8 +11,13 @@ import { userAdded } from "../features/users/usersSlice";
 import Button from "./sub/Button";
 
 const selectUsers = (state) => state.users;
+const selectTable = (state) => state.table;
 
 const Content = ({ socket }) => {
+  const table = useSelector(selectTable);
+  const selectItems = (state) => state[table.name];
+  const items = useSelector(selectItems);
+
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
 
@@ -56,6 +61,8 @@ const Content = ({ socket }) => {
       pet: users[i - 1].pet,
       date: users[i - 1].date,
     });
+    console.log(table);
+    console.log(items);
   };
   const toggleSelectable = (i) => {
     const selectedRow = document.getElementsByClassName("row")[i - 1];
@@ -99,17 +106,19 @@ const Content = ({ socket }) => {
       </div>
       <div className="table">
         <Button
-          text={"+ Добавить пользователя"}
-          action={() => dispatch(
-            userAdded({
-              id: 4,
-              name: "Bob",
-              age: 45,
-              job: "merchant",
-              pet: pets[2].name,
-              date: "2021-01-21",
-            })
-          )}
+          text={"+ Добавить"}
+          action={() =>
+            dispatch(
+              userAdded({
+                id: 4,
+                name: "Bob",
+                age: 45,
+                job: "merchant",
+                pet: pets[2].name,
+                date: "2021-01-21",
+              })
+            )
+          }
         />
         <div className="filters">
           <div className="input-container">

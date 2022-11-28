@@ -1,16 +1,25 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { tableSelected } from "../features/table/tableSlice";
 
 const Sidebar = ({ open }) => {
   const columns = [
-    { id: 1, title: "пользователи", active: true },
-    { id: 2, title: "питомцы", active: false },
-    { id: 3, title: "должности", active: false },
+    { id: 1, title: "пользователи", active: true, table: "users" },
+    { id: 2, title: "питомцы", active: false, table: "pets" },
+    { id: 3, title: "должности", active: false, table: "jobs" },
   ];
 
   const [row, setRow] = useState(0);
 
-  const toggleActive = (i) => {
-    setRow(i);
+  const dispatch = useDispatch();
+
+  const toggleActive = (column) => {
+    setRow(column.id);
+    dispatch(
+      tableSelected({
+        name: column.table
+      })
+    );
   };
 
   return (
@@ -24,7 +33,7 @@ const Sidebar = ({ open }) => {
                 : "item title-column"
             }
             key={column.id}
-            onClick={() => toggleActive(column.id)}
+            onClick={() => toggleActive(column)}
           >
             {column.title}&nbsp;🥳
           </div>
