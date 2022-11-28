@@ -61,8 +61,6 @@ const Content = ({ socket }) => {
       pet: users[i - 1].pet,
       date: users[i - 1].date,
     });
-    console.log(table);
-    console.log(items);
   };
   const toggleSelectable = (i) => {
     const selectedRow = document.getElementsByClassName("row")[i - 1];
