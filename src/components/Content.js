@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PetsList } from "../features/pets/PetsList";
 import { userAdded } from "../features/users/usersSlice";
 import Modal from "./Modal";
 import Button from "./sub/Button";
@@ -87,7 +88,7 @@ const Content = ({ socket }) => {
     setRow(0);
   };
 
-  const sendMessage = () => {
+  /*const sendMessage = () => {
     socket.on("hello", (msg) => {
       console.log("hello, " + msg);
     });
@@ -95,10 +96,11 @@ const Content = ({ socket }) => {
 
   useEffect(() => {
     sendMessage();
-  });
+  });*/
 
   return (
     <div className="content">
+      <PetsList />
       <div className="filters-list">
         {filters.map((filter) => {
           return (
@@ -126,7 +128,9 @@ const Content = ({ socket }) => {
           }
         />
         <Button text={"+"} action={toggleModalOpen} />
-        {modalOpen ? <Modal modalOpen={modalOpen} toggleModalOpen={toggleModalOpen} /> : null}
+        {modalOpen ? (
+          <Modal modalOpen={modalOpen} toggleModalOpen={toggleModalOpen} />
+        ) : null}
         <div className="filters">
           <div className="input-container">
             <i className="icon">
