@@ -1,28 +1,19 @@
-import {
-  Cancel,
-  CheckCircle,
-  Edit,
-  FilterList,
-  Search,
-} from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import AddPetForm from "../features/pets/AddPetForm";
 import { PetsList } from "../features/pets/PetsList";
-import { userAdded } from "../features/users/usersSlice";
-import Modal from "./Modal";
-import Button from "./sub/Button";
+import UsersList from "../features/users/UsersList";
 
 const selectUsers = (state) => state.users;
 const selectTable = (state) => state.table;
 
-const Content = ({ socket }) => {
+const Content = ({ socket, table }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModalOpen = () => {
     setModalOpen((prev) => !prev);
   };
 
-  const table = useSelector(selectTable);
   const selectItems = (state) => state[table.name];
   const items = useSelector(selectItems);
 
@@ -88,6 +79,15 @@ const Content = ({ socket }) => {
     setRow(0);
   };
 
+  const toggleTable = () => {
+    switch (table?.table) {
+      case "users":
+        return <UsersList />;
+      case "pets":
+        return <PetsList />;
+    }
+  };
+
   /*const sendMessage = () => {
     socket.on("hello", (msg) => {
       console.log("hello, " + msg);
@@ -100,149 +100,8 @@ const Content = ({ socket }) => {
 
   return (
     <div className="content">
-      <PetsList />
-      <div className="filters-list">
-        {filters.map((filter) => {
-          return (
-            <div className="title-column" key={filter.id}>
-              <input type="checkbox" className="checkbox" />
-              {filter.title}
-            </div>
-          );
-        })}
-      </div>
-      <div className="table">
-        <Button
-          text={"+ Добавить"}
-          action={() =>
-            dispatch(
-              userAdded({
-                id: 4,
-                name: "Bob",
-                age: 45,
-                job: "merchant",
-                pet: pets[2].name,
-                date: "2021-01-21",
-              })
-            )
-          }
-        />
-        <Button text={"+"} action={toggleModalOpen} />
-        {modalOpen ? (
-          <Modal modalOpen={modalOpen} toggleModalOpen={toggleModalOpen} />
-        ) : null}
-        <div className="filters">
-          <div className="input-container">
-            <i className="icon">
-              <Search />
-            </i>
-            <input type="text" className="text-input" />
-          </div>
-          <FilterList />
-        </div>
-        <div className="title">
-          <div className="column">
-            <input type="checkbox" className="checkbox" />
-          </div>
-          {columns.map((column) => {
-            return (
-              <div className="title-column" key={column.id}>
-                {column.title}
-              </div>
-            );
-          })}
-        </div>
-        {users.map((user) => {
-          return (
-            <div className="row" key={user.id}>
-              <div className="column">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  key={user.id}
-                  onChange={() => toggleSelectable(user.id)}
-                />
-              </div>
-              {row > 0 && users[row - 1].id === user.id ? (
-                <>
-                  <input
-                    type="text"
-                    value={currentUser.name}
-                    onChange={handleChange("name")}
-                    className="text-input"
-                  />
-                  <input
-                    type="text"
-                    value={currentUser.age}
-                    onChange={handleChange("age")}
-                    className="text-input"
-                  />
-                  <input
-                    type="text"
-                    value={currentUser.job}
-                    onChange={handleChange("job")}
-                    className="text-input"
-                  />
-                  <select
-                    name="pets"
-                    onChange={handleChange("pet")}
-                    className="select"
-                  >
-                    {pets.map((pet) => {
-                      return (
-                        <option value={pet.id} key={pet.id}>
-                          {pet.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <input
-                    type="date"
-                    defaultValue={currentUser.date}
-                    onChange={handleChange("date")}
-                    className="text-input"
-                  />
-                </>
-              ) : (
-                <>
-                  <div className="column">{user.name}</div>
-                  <div className="column">{user.age}</div>
-                  <div className="column">{user.job}</div>
-                  <div className="column">{user.pet}</div>
-                  <div className="column">{user.date}</div>
-                </>
-              )}
-
-              <div className="column">
-                {row > 0 && users[row - 1].id === user.id ? (
-                  <button className="icon-button" onClick={cancelEditing}>
-                    <i>
-                      <Cancel />
-                    </i>
-                  </button>
-                ) : null}
-
-                <button
-                  className="icon-button"
-                  onClick={() =>
-                    row > 0 && users[row - 1].id === user.id
-                      ? saveChanges(user)
-                      : toggleEditable(user.id)
-                  }
-                >
-                  <i>
-                    {row > 0 && users[row - 1].id === user.id ? (
-                      <CheckCircle />
-                    ) : (
-                      <Edit />
-                    )}
-                  </i>
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <AddPetForm open={modalOpen} toggleModalOpen={toggleModalOpen} />
+      {toggleTable()}
     </div>
   );
 };

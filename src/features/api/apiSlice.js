@@ -13,7 +13,11 @@ export const apiSlice = createApi({
         body: initialPet,
       }),
     }),
+    getFoods: builder.query({
+      query: () => "/foods",
+    }),
   }),
 });
 
-export const { useGetPetsQuery, useAddNewPetMutation } = apiSlice;
+export const { useGetPetsQuery, useAddNewPetMutation, useGetFoodsQuery } =
+  apiSlice;
